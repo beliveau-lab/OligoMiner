@@ -110,7 +110,7 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
 	
 	This should create executable files for many NUPACK functionalites that can be used for secondary structure evaluation, found in `/Path/To/NUPACK/nupack3.0.4/bin'. (See the provided NUPACK user manual for additional information on these executables).
 
-	You will need these executables within your path for our `structureChecker.py` script to work. You can do this with:
+	You will need these executables within your path for our `structureCheck.py` script to work. You can do this with:
 
 		export PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
 
