@@ -17,7 +17,7 @@ bioRxiv 171504; doi: https://doi.org/10.1101/171504
 Note about operating systems
 ----------------------------
 
-OligoMiner is a set of command-line scripts written in Python 2.7 and can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell))
+OligoMiner is a set of command-line scripts developed on Python 2.7 that can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell))
 
 If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you. If you are using Windows, we recommend downloading [Cygwin](https://www.cygwin.com/) and running the instructions through that environment, but unfortunately we cannot guarantee that these instructions will work for you.
 
