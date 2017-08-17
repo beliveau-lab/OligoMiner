@@ -30,10 +30,13 @@
 scriptName = 'structureCheck'
 
 # Specify script version.
-Version = '1.6'
+Version = '1.6.1'
 
 # Import module for handling input arguments.
 import argparse
+
+# Import os module.
+import os
 
 # Import timeit module and record start time. This provides a rough estimate of
 # the wall clock time it takes to run the script.
@@ -91,9 +94,8 @@ class StructureChecker:
                    % (self.fileName, self.IDval, self.Temp, randomInt)],
                    stderr=PIPE, stdout=PIPE, bufsize=1)
         prob_val = float(p.stdout.readlines()[14])
-        subprocess.call(['rm', '%s_%s_%0.0f_%d_prob_temp.in'
-                         % (self.fileName, self.IDval, self.Temp, randomInt)],
-                         stderr=None, shell=False)
+        os.remove('%s_%s_%0.0f_%d_prob_temp.in' \
+                  % (self.fileName, self.IDval, self.Temp, randomInt))
         return prob_val
 
 
@@ -102,8 +104,7 @@ class StructureChecker:
         # Create a randomized directory to hold temp files.
         dirName = '%s_%d' \
                   % (self.fileName, np.random.random_integers(0, 1000000))
-        subprocess.call(['mkdir', '%s/%s' % (self.tempDir, dirName)],
-                         stderr=None, shell=False)
+        os.mkdir('%s/%s' % (self.tempDir, dirName))
 
         # Open input file for reading.
         with open(self.inputFile, 'r') as f:
@@ -168,8 +169,8 @@ class StructureChecker:
                              self.saltConc, self.formConc))
 
         # Remove the temporary directory.
-        subprocess.call(['rm', '-R', '%s/%s' % (self.tempDir, dirName)],
-                        stderr=None, shell=False)
+        os.removedirs('%s/%s' % (self.tempDir, dirName))
+
 
         # Determine the name of the output file.
         if self.outNameVal is None:
