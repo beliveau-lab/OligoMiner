@@ -165,7 +165,7 @@ To make sure all of your dependencies are set up properly, below we will run you
 
 ### Downloading the code
 
-Once you have all necessary dependencies, you can download the scripts from our repository (either by [cloning the repository](https://help.github.com/articles/cloning-a-repository/) or directly downloading the files above). Be sure to download all files in the "Example Files" folder if you want to test the functionality of all the scripts with the commands provided below. 
+Once you have all necessary dependencies, you can download the scripts from our repository (either by [cloning the repository](https://help.github.com/articles/cloning-a-repository/) or directly downloading the files above). Be sure to download all files in the "ExampleFiles" folder if you want to test the functionality of all the scripts with the commands provided below. 
 
 
 ### Running scripts on the example files
