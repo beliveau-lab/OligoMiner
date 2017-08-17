@@ -7,7 +7,7 @@ If you are looking to use probe sequences that we have already generated for var
 
 We provide this open source software without any warranty under the [MIT license](https://opensource.org/licenses/MIT).
 
-Please remember to cite our publication!
+Please remember to cite our pre-print:
 
 OligoMiner: A rapid, flexible environment for the design of genome-scale oligonucleotide in situ hybridization probes
 Brian J. Beliveau, Jocelyn Y. Kishi, Guy Nir, Hiroshi M. Sasaki, Sinem K. Saka, Son C. Nguyen, Chao-ting Wu, Peng Yin
@@ -17,6 +17,8 @@ bioRxiv 171504; doi: https://doi.org/10.1101/171504
 Note about operating systems
 ----------------------------
 
+OligoMiner is a set of command-line scripts written in Python 2.7 and can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell))
+
 If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you. If you are using Windows, we recommend downloading [Cygwin](https://www.cygwin.com/) and running the instructions through that environment, but unfortunately we cannot guarantee that these instructions will work for you.
 
 Also note that if you're on a Mac, you will need a C compiler installed (for Biopython, NUPACK, Jellyfish, and potentially the alignment program you choose to use, e.g. Bowtie2). You should download [Xcode](https://developer.apple.com/xcode/) for this purpose.
@@ -24,13 +26,15 @@ Also note that if you're on a Mac, you will need a C compiler installed (for Bio
 Installing OligoMiner dependencies
 ----------------------------------
 
-First, you will need to download all dependencies, which include [Python](https://www.python.org) (developed on Python 2.7), [NumPy](http://www.numpy.org/) (version 1.8.2+), [SciPy](https://www.scipy.org/), and [BioPython](http://biopython.org/). We recommend doing this inside of a [Anaconda](https://www.continuum.io/downloads) environment (see step 1 below).
+First, you will need to download all dependencies, which include [Python](https://www.python.org) (developed on Python 2.7), [NumPy](http://www.numpy.org/) (version 1.8.2+), [SciPy](https://www.scipy.org/), and [BioPython](http://biopython.org/). We recommend doing this inside of a [Anaconda](https://www.continuum.io/downloads) or [Miniconda](https://conda.io/miniconda.html) environment (see step 1 below).
 
 You will also need a stand-alone sequence alignment tool such as [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). 
 
 If you would like to use the optional script to evaluate of your probes to adopt secondary structures, you will need [NUPACK](http://nupack.org). 
 
-If you want to use our machine learning algorithm to screen probes, you will also need the [scikit-learn](http://scikit-learn.org/stable/install.html) (version 0.17+) package. If you want to screen probes for the presence of high-abundance k-mers, you should download [Jellyfish](http://www.genome.umd.edu/jellyfish.html).
+If you want to use our machine learning algorithm to screen probes, you will also need the [scikit-learn](http://scikit-learn.org/stable/install.html) (version 0.17+) package. If you want to screen probes for the presence of high-abundance k-mers, you will need [Jellyfish](http://www.genome.umd.edu/jellyfish.html).
+
+
 
 ### Installing Python and other required dependencies
 
@@ -63,7 +67,22 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
 	If you're having trouble executing these commands on a server, one problem may be that you don't have root access. If this is the case, try adding the `--user` argument to the end of the `pip` command to install as a local user.
 
 
-4. You'll need a genome alignment tool to screen your oligos against your genome of interest. We recommend [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). After downloading and installing Bowtie2, you'll need to build a [genome index](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer). We recommend you use an unmasked sequence to build the index.
+4. You'll need a genome alignment tool to screen your oligos against your genome of interest. We recommend [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). If you are using Anaconda, you can easily use [bioconda](https://bioconda.github.io/) to install Bowtie2.
+   
+    First set up the bioconda channels:
+    
+        conda config --add channels r
+        conda config --add channels defaults
+        conda config --add channels conda-forge
+        conda config --add channels bioconda    
+    
+    Next, install Bowtie2:
+ 
+        conda install bowtie2
+        
+  After installing Bowtie2, you'll need to build a [genome index](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer). We recommend you use an unmasked sequence to build the index. E.g. for hg38:
+  
+        bowtie2-build hg38.fa hg38
 
 #### Recommended installation:
 
@@ -95,13 +114,24 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
 
 		export PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
 
-	NOTE: If you don't want to re-execute this `export` command every time you open a new terminal to add  NUPACK to the `$PATH` variable, then you will need to add the folliwng lines to one of your `~/.bash_profile` or `~/.bashrc` files:
+	You will also need to set the 'NUPACKHOME' environmental variable:
+	
+	    export NUPACKHOME = /Path/To/NUPACK/nupack3.0.4/
+	
+	NOTE: If you don't want to re-execute these `export` commands every time you open a new terminal, you will need to [add the following lines](https://www.howtogeek.com/102468/a-beginners-guide-to-editing-text-files-with-vi/) to your `~/.bash_profile` or `~/.bashrc` files:
 
 		PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
 		export PATH
+		
+		NUPACKHOME = /Path/To/NUPACK/nupack3.0.4/
+		export NUPACKHOME
+		
 	
+3. If you want to use the `kmerFilter.py` script, you will need [Jellyfish](http://www.genome.umd.edu/docs/JellyfishUserGuide.pdf). As with Bowtie2, this can easily be installed using bioconda:
 
-3. If you want to use the `kmerFilter.py` script, you need to download and compile [Jellyfish](http://www.genome.umd.edu/docs/JellyfishUserGuide.pdf). As with NUPACK, you need to navigate to the directory where the code is located, where there should be a `Makefile`. For example, if you the source code is in directory /Path/To/Jellyfish/jellyfish-2.2.6, then do:
+       conda install jellyfish
+        
+   If instead you want to build Jellyfish from source, you will need to navigate to the directory where the code is located, where there should be a `Makefile`. For example, if you the source code is in directory /Path/To/Jellyfish/jellyfish-2.2.6, then do:
 
 		cd /Path/To/Jellyfish/jellyfish-2.2.6
 
@@ -124,7 +154,9 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
 		PATH=$PATH:/Path/To/Jellyfish/jellyfish-2.2.6
 		export PATH
 
-	Now, you'll also want to build a [Jellyfish library](http://www.genome.umd.edu/jellyfish.html) for your genome of interest, which we also recommend using unmasked sequences for.
+	Now, you'll also want to build a [JF file](http://www.genome.umd.edu/jellyfish.html) for your genome of interest, which we also recommend using unmasked sequences for. We also recommend writing the output file as 1-bit (max k-mer count 255, any occuring more reported as '255') and not reporting k-mers that only occur once. E.g. for 18-mers in hg38:
+	
+	    jellyfish count -s 3300M -m 18 -o hg38_18.jf --out-counter-len 1 -L 2 hg38.fa
 
 
 Running OligoMiner locally
@@ -146,13 +178,13 @@ Once you have all necessary dependencies, you can download the scripts from our 
 
 2. NGS alignment. For example, you can use [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) to align the newly generated set of candidate probes by running:
 
-		bowtie2 -x hg38 -U 3.fastq --no-hd -t -k 100 --very-sensitive-local -S 3_u.sam
+		bowtie2 -x /path_to_hg38_index/hg38 -U 3.fastq --no-hd -t -k 100 --very-sensitive-local -S 3_u.sam
 
 	or
 
-		bowtie2 -x hg38 -U 3.fastq --no-hd -t -k 2 --local -D 20 -R 3 -N 1 -L 20 -i C,4 --score-min G,1,4 -S 3.sam
+		bowtie2 -x /path_to_hg38_index/hg38 -U 3.fastq --no-hd -t -k 2 --local -D 20 -R 3 -N 1 -L 20 -i C,4 --score-min G,1,4 -S 3.sam
 
-	... where "hg38" is replaced with the path to the bowtie2 dictionaries for your genome of interest. These commands produce .sam files (`3_u.sam` and `3.sam`) containing sequence alignment information, but require genome builds as described in the previous section. If you are just testing your scripts to make sure they are working properly, we have already provided the output `3_u.sam` and `3.sam` files in the example files directory for you to use to test subsequent scripts.
+	... where "path_to_hg38_index" is replaced with the path to the bowtie2 indices for your genome of interest. These commands produce .sam files (`3_u.sam` and `3.sam`) containing sequence alignment information, but require genome builds as described in the previous section. If you are just testing your scripts to make sure they are working properly, we have already provided the output `3_u.sam` and `3.sam` files in the example files directory for you to use to test subsequent scripts.
 
 3. To process the .sam file produced by sequence alignment, use the `outputClean.py` script:
 
@@ -168,7 +200,7 @@ Once you have all necessary dependencies, you can download the scripts from our 
 
 		python kmerFilter.py -f 3_probes.bed -m 18 -j 18 -j sp.jf -k 4
 
-	This command uses a Jellyfish dictionary containing information about high abundance kmers in the genome of interest to screen probes. (We have provided `sp.jf` as an example for you to test the python script, which should pass all 12 probes. However, you will need to generate your own Jellyfish dictionary for your desired genome in the real case!) To see additional command line arguments available for this script, you can run the python file with the `-h` argument (i.e. `python kmerFilter.py -h').
+	This command uses a Jellyfish dictionary containing information about high abundance kmers in the genome of interest to screen probes. (We have provided `sp.jf` as an example for you to test the python script, which should pass all 12 probes into the file `3_probes_18_4.bed` . However, you will need to generate your own Jellyfish dictionary for your desired genome in the real case!) To see additional command line arguments available for this script, you can run the python file with the `-h` argument (i.e. `python kmerFilter.py -h').
 
 5. To convert your probe set to their reverse complements, you can use the `probeRC.py` script:
 
