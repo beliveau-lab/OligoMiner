@@ -80,7 +80,7 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
  
         conda install bowtie2
         
-  After installing Bowtie2, you'll need to build a [genome index](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer). We recommend you use an unmasked sequence to build the index. E.g. for hg38:
+    After installing Bowtie2, you'll need to build a [genome index](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer). We recommend you use an unmasked sequence to build the index. E.g. for hg38:
   
         bowtie2-build hg38.fa hg38
 
