@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # probeRC.py
@@ -30,7 +31,7 @@
 scriptName = 'probeRC'
 
 # Specify script version.
-Version = 1.6
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse

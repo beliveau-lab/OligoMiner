@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # fastqToBed.py
@@ -26,10 +27,10 @@
 # --------------------------------------------------------------------------
 
 # Specific script name.
-scriptName = 'FastqToBed'
+scriptName = 'fastqToBed'
 
 # Specify script version.
-Version = 1.2
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # blockParse.py
@@ -30,7 +31,7 @@
 scriptName = 'blockParse'
 
 # Specify script version.
-Version = '1.6'
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse
@@ -954,8 +955,8 @@ def main():
     sal = args.salt
     form = args.formamide
     sp = args.Spacing
-    conc1 = args.dnac1
-    conc2 = args.dnac2
+    concA = args.dnac1
+    concB = args.dnac2
     headerVal = args.header
     bedVal = args.bed
     OverlapModeVal = args.OverlapMode
@@ -964,6 +965,15 @@ def main():
     debugVal = args.Debug
     metaVal = args.Meta
     outNameVal = args.output
+
+    # Assign concentration variables based on magnitude.
+    if args.dnac1 >= args.dnac2:
+        conc1 = args.dnac1
+        conc2 = args.dnac2
+
+    else:
+        conc1 = args.dnac2
+        conc2 = args.dnac1
 
     # Retrieve the stack table. Note that this may give users the opportunity
     # to execute arbitrary code, so better security measures should be employed

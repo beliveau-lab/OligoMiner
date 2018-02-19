@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # outputClean.py
@@ -30,7 +31,7 @@
 scriptName = 'outputClean'
 
 # Specify script version.
-Version = '1.6'
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse
@@ -56,7 +57,7 @@ def probeTm(seq1, sal, form):
 
 
 def cleanOutput(inputFile, uniqueVal, zeroVal, probVal, tempVal, sal, form,
-                reportVal, debugVal, metaVal, outNameVal):
+                reportVal, debugVal, metaVal, outNameVal, startTime):
     # Determine the stem of the input filename.
     fileName = str(inputFile).split('.')[0]
 
@@ -424,10 +425,10 @@ def main():
                            help='The probability threshold for classifying a '
                                 'candidate sequence as likely to have '
                                 'off-target binding using the LDA model. '
-                                'Default=0.5. Selecting larger values will '
+                                'Default=0.5. Selecting smaller values will '
                                 'improve precision (fewer false positives), but'
                                 'at the expense of recall (more false '
-                                'negatives). Selecting lower values will '
+                                'negatives). Selecting larger values will '
                                 'improve recall at the expense of precision.')
     userInput.add_argument('-T', '--Temp', action='store', type=float,
                            default=42,
@@ -476,7 +477,7 @@ def main():
     outNameVal = args.output
 
     cleanOutput(inputFile, uniqueVal, zeroVal, probVal, tempVal, sal, form,
-                reportVal, debugVal, metaVal, outNameVal)
+                reportVal, debugVal, metaVal, outNameVal, startTime)
 
     # Print wall-clock runtime to terminal.
     print 'Program took %f seconds' % (timeit.default_timer() - startTime)

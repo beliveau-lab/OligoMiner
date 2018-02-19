@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # probeTm.py
@@ -30,7 +31,7 @@
 scriptName = 'probeTm'
 
 # Specify script version.
-Version = 1.5
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse
@@ -165,6 +166,15 @@ def main():
     conc2 = args.dnac2
     inputSeqVal = args.inputSeq
     outNameVal = args.output
+
+    # Assign concentration variables based on magnitude.
+    if args.dnac1 >= args.dnac2:
+        conc1 = args.dnac1
+        conc2 = args.dnac2
+
+    else:
+        conc1 = args.dnac2
+        conc2 = args.dnac1
 
     getTm(inputFile, saltConc, formConc, conc1, conc2, inputSeqVal, outNameVal)
 

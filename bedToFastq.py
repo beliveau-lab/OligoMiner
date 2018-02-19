@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # bedToFastq.py
@@ -28,7 +29,7 @@
 scriptName = 'bedToFastq'
 
 # Specify script version.
-Version = 1.2
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse

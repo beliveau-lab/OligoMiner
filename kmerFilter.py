@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # kmerFilter.py
@@ -30,7 +31,7 @@
 scriptName = 'kmerFilter'
 
 # Specify script version.
-Version = '1.6'
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse
@@ -46,7 +47,7 @@ import numpy as np
 import subprocess
 
 def runFilter(inputFile, outNameVal, merLengthVal, jellyfishFile, kVal, IDval,
-              reportVal, debugVal, metaVal):
+              reportVal, debugVal, metaVal, startTime):
     """Runs Jellyfish to screen probes sequence from a .bed file for high
     abundance k-mers."""
 
@@ -141,7 +142,7 @@ def runFilter(inputFile, outNameVal, merLengthVal, jellyfishFile, kVal, IDval,
     for i in range(0, len(file_read), 1):
       if i not in excludeSet:
           outList.append(file_read[i])
-          if reportVal is True:
+          if reportVal or debugVal is True:
               rChrom = file_read[i].split('\t')[0]
               rStart = file_read[i].split('\t')[1]
               rStop = file_read[i].split('\t')[2]
@@ -151,10 +152,10 @@ def runFilter(inputFile, outNameVal, merLengthVal, jellyfishFile, kVal, IDval,
                                     'of %d, added to output' \
                                     % (rChrom, rStart, rStop, merLengthVal,
                                        kVal))
-              if debugVal is True:
-                  print('Candidate probe at %s:%s-%s passed  %smer filtering '
-                        'using an occurrence threshold of %d, added to output'
-                        % (rChrom, rStart, rStop, merLengthVal, kVal))
+          if debugVal is True:
+              print('Candidate probe at %s:%s-%s passed  %smer filtering '
+                    'using an occurrence threshold of %d, added to output'
+                    % (rChrom, rStart, rStop, merLengthVal, kVal))
 
     # Remove temporary files.
     subprocess.call(['rm', '%s_%d_%d_%d_temp.fa' \
@@ -314,7 +315,7 @@ def main():
 
     # Run the filter logic.
     runFilter(inputFile, outNameVal, merLengthVal, jellyfishFile, kVal, IDval,
-              reportVal, debugVal, metaVal)
+              reportVal, debugVal, metaVal, startTime)
 
     # Print wall-clock runtime to terminal.
     print 'Program took %f seconds' % (timeit.default_timer() - startTime)

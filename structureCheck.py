@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # --------------------------------------------------------------------------
 # OligoMiner
 # structureCheck.py
@@ -30,7 +31,7 @@
 scriptName = 'structureCheck'
 
 # Specify script version.
-Version = '1.6.1'
+Version = '1.7'
 
 # Import module for handling input arguments.
 import argparse
@@ -56,7 +57,7 @@ from Bio.Alphabet import IUPAC
 class StructureChecker:
     def __init__(self, inputFile, formConc, saltConc, NUPACKmat, threshVal,
                  Temp, IDval, reportVal, debugVal, metaVal, tempDir,
-                 outNameVal):
+                 outNameVal, startTime):
         self.inputFile = inputFile
         self.formConc = formConc
         self.saltConc = saltConc
@@ -69,6 +70,7 @@ class StructureChecker:
         self.metaVal = metaVal
         self.tempDir = tempDir
         self.outNameVal = outNameVal
+        self.startTime = startTime
 
         # Calculate T to use with NUPACK.
         self.CorrTemp = 0.65 * self.formConc + self.Temp
@@ -104,7 +106,8 @@ class StructureChecker:
         # Create a randomized directory to hold temp files.
         dirName = '%s_%d' \
                   % (self.fileName, np.random.random_integers(0, 1000000))
-        os.mkdir('%s/%s' % (self.tempDir, dirName))
+        if not os.path.exists('%s/%s' % (self.tempDir, dirName)):
+            os.mkdir('%s/%s' % (self.tempDir, dirName))
 
         # Open input file for reading.
         with open(self.inputFile, 'r') as f:
@@ -202,7 +205,7 @@ class StructureChecker:
             metaText = open('%s_outputClean_meta.txt' % outName, 'w')
             metaText.write('%s\t%f\t%s\t%0.2f\t%d\t%d' \
                            % (self.inputFile,
-                              timeit.default_timer() - startTime,
+                              timeit.default_timer() - self.startTime,
                               Version, self.Temp, cleanNum, candsNum))
             metaText.close()
 
@@ -260,12 +263,12 @@ class StructureChecker:
 
 def runStructureChecker(inputFile, formConc, saltConc, NUPACKmat, threshVal,
                         Temp, IDval, reportVal, debugVal, metaVal, tempDir,
-                        outNameVal):
+                        outNameVal, startTime):
     """Creates and runs an instance of a StructureChecker, which scans probes
     and evaluates their structures using NUPACK."""
     sc = StructureChecker(inputFile, formConc, saltConc, NUPACKmat, threshVal,
                           Temp, IDval, reportVal, debugVal, metaVal, tempDir,
-                          outNameVal)
+                          outNameVal, startTime)
     sc.run()
 
 
@@ -292,7 +295,8 @@ def main():
                                 '50')
     userInput.add_argument('-s', '--salt', action='store', default=390,
                            type=float,
-                           help='The mM Na+ concentration, default is 390')
+                           help='The mM Na+ concentration, default is 390. '
+                                'NOTE: NUPACK\'s allowable range is 50-1100 mM')
     userInput.add_argument('-m', '--material', action='store',
                            default='dna1998', type=str,
                            help='The NUPACK material setting, default is '
@@ -355,7 +359,7 @@ def main():
     # Run the structure checker.
     runStructureChecker(inputFile, formConc, saltConc, NUPACKmat, threshVal,
                         Temp, IDval, reportVal, debugVal, metaVal, tempDir,
-                        outNameVal)
+                        outNameVal, startTime)
 
     # Print wall-clock runtime to terminal.
     print 'Program took %f seconds' % (timeit.default_timer() - startTime)
