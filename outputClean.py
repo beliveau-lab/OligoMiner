@@ -251,7 +251,7 @@ def cleanOutput(inputFile, uniqueVal, zeroVal, probVal, tempVal, sal, form,
                       # Report info on rejected candidates if desired.
                       if reportVal or debugVal is True:
                           if re.match('\*', chromField) is not None:
-                              if start not in candsList:
+                              if start not in rejectList:
                                   rejectList.append(start)
                                   if reportVal is True:
                                       reportList.append('Candidate probe at '
