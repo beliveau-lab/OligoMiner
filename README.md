@@ -117,7 +117,7 @@ We recommend using [Anaconda](https://www.continuum.io/downloads) to install new
 		PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
 		export PATH
 		
-		NUPACKHOME = /Path/To/NUPACK/nupack3.0.4/
+		NUPACKHOME=/Path/To/NUPACK/nupack3.0.4/
 		export NUPACKHOME
 		
 	
