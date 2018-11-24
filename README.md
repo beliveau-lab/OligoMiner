@@ -192,7 +192,7 @@ Once you have all necessary dependencies, you can download the scripts from our 
 
 4. [Optional] Now, you can use `kmerFilter.py` to screen your probes against high abundance kmers (requires [Jellyfish](http://www.genome.umd.edu/jellyfish.html) to be installed and in your path, and a Jellyfish dictionary, see instructions above).
 
-		python kmerFilter.py -f 3_probes.bed -m 18 -j 18 -j sp.jf -k 4
+		python kmerFilter.py -f 3_probes.bed -m 18 -j sp.jf -k 4
 
 	This command uses a Jellyfish dictionary containing information about high abundance kmers in the genome of interest to screen probes. (We have provided `sp.jf` as an example for you to test the python script, which should pass all 12 probes into the file `3_probes_18_4.bed` . However, you will need to generate your own Jellyfish dictionary for your desired genome in the real case!) To see additional command line arguments available for this script, you can run the python file with the `-h` argument (i.e. `python kmerFilter.py -h').
 
