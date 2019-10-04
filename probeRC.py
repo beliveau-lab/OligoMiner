@@ -85,8 +85,8 @@ def main():
     # Allow user to input parameters on command line.
     userInput = argparse.ArgumentParser(description=\
         '%s version %s. Requires a .bed file with first four columns in the '
-        'format chromosome <tab> start <tab> stop <tab> sequence <tab> Tm such
-	' as the .bed files produced by outputClean. Returns a .bed file that is '
+        'format chromosome <tab> start <tab> stop <tab> sequence <tab> Tm such '
+	    ' as the .bed files produced by outputClean. Returns a .bed file that is '
         'identical to the input file except that the probe sequences have been '
         'replaced with their reverse complements.' % (scriptName, Version))
     requiredNamed = userInput.add_argument_group('required arguments')
