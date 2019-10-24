@@ -107,7 +107,7 @@ class StructureChecker:
         dirName = '%s_%d' \
                   % (self.fileName, np.random.random_integers(0, 1000000))
         if not os.path.exists('%s/%s' % (self.tempDir, dirName)):
-            os.mkdir('%s/%s' % (self.tempDir, dirName))
+            os.makedirs('%s/%s' % (self.tempDir, dirName))
 
         # Open input file for reading.
         with open(self.inputFile, 'r') as f:
@@ -146,7 +146,7 @@ class StructureChecker:
                           'mM Na+ and %d%% formamide, added to output' \
                           % (file_read[i].split('\t')[0],
                              file_read[i].split('\t')[1],
-                             file_read[i].split('\t')[2], 
+                             file_read[i].split('\t')[2],
                              p, self.threshVal, self.Temp,
                              self.saltConc, self.formConc))
             else:
