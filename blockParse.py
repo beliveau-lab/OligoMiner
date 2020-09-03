@@ -572,6 +572,9 @@ class SequenceCrawler:
             self.start = int(str(self.headerVal).split(':')[1].split('-')[0])
             stop = str(self.headerVal).split(':')[1].split('-')[1]
 
+        # strip any white space from chrom seqid
+        chrom = chrom.strip()
+
         # Make lists to hold Report info if desired.
         if self.reportVal:
             self.reportList = []
