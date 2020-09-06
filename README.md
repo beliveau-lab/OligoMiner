@@ -17,150 +17,37 @@ bioRxiv 171504; doi: https://doi.org/10.1101/171504
 Note about operating systems
 ----------------------------
 
-OligoMiner is a set of command-line scripts developed on Python 2.7 that can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)).
+OligoMiner is a set of command-line scripts developed on Python 2.7 that can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you.
 
-If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you. If you are using Windows, we recommend downloading [Cygwin](https://www.cygwin.com/) and running the instructions through that environment, but unfortunately we cannot guarantee that these instructions will work for you.
-
-Also note that if you're on a Mac, you will need a C compiler installed (for Biopython, NUPACK, Jellyfish, and potentially the alignment program you choose to use, e.g. Bowtie2). You should download [Xcode](https://developer.apple.com/xcode/) for this purpose.
+If you are using Windows 10, we recommend enabling [Ubuntu on Windows 10](https://ubuntu.com/tutorials/ubuntu-on-windows), a full Linux distribution, and then running OligoMiner in the Ubuntu terminal.
 
 Installing OligoMiner dependencies
 ----------------------------------
 
-First, you will need to download all dependencies, which include [Python](https://www.python.org) (developed on Python 2.7), [NumPy](http://www.numpy.org/) (version 1.8.2+), [SciPy](https://www.scipy.org/), and [BioPython](http://biopython.org/). We recommend doing this inside of a [Anaconda](https://www.continuum.io/downloads) or [Miniconda](https://conda.io/miniconda.html) environment (see step 1 below).
 
-You will also need a stand-alone sequence alignment tool such as [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml).
+1. Make sure you have [conda](https://docs.conda.io/en/latest/miniconda.html) installed. 
 
-If you would like to use the optional script to evaluate of your probes to adopt secondary structures, you will need [NUPACK](http://nupack.org).
+2. Clone this repo, then create and activate the provided [environment](./environment.yml):
 
-If you want to use our machine learning algorithm to screen probes, you will also need the [scikit-learn](http://scikit-learn.org/stable/install.html) (version 0.17+) package. If you want to screen probes for the presence of high-abundance k-mers, you will need [Jellyfish](http://www.genome.umd.edu/jellyfish.html).
+```
+$ git clone https://github.com/beliveau-lab/OligoMiner.git
+$ cd OligoMiner
+$ conda env create -f environment.yml
+$ conda activate probeMining
+```
 
+This will install the following packages and their dependencies:
 
-
-### Installing Python and other required dependencies
-
-We recommend using [Anaconda](https://www.continuum.io/downloads) to install new Python modules, as it will automatically install all required Python dependencies in one go (see step 1). If you prefer to do it all without a virtual environment, we also provide instructions below.
-
-1. [Optional but recommended] Download the Python 2.7 version of [Anaconda](https://www.continuum.io/downloads). This will allow you to quickly and easily set up your Python environment using the `conda` commands below.
-
-		conda create --name probeMining numpy scipy biopython scikit-learn
-
-	This creates a virtual Python environment called "probeMining" (you can change the name if you want). Now, anytime you want to run Python scripts from your terminal, you can just run:
-
-		source activate probeMining
-
-	... which activates your environment and allows you to run this Python environment that already has required library dependencies installed.
-
-	to deactivate this environemnt, simply run:
-
-	    source deactivate
-
-
-2. *If you're using [Anaconda](https://www.continuum.io/downloads) (step 1), then Python is already installed and you can skip this step.* Install [Python](https://www.python.org). We developed this on Python 2.7 and recommend you use OligoMiner with this version. You can find some instructions on installing Python in [this PDF](http://genetics.med.harvard.edu/oligopaints/sites/default/files/Oligopaints_Scripts_Manual.pdf) document on our website.
-
-3. *If you're using [Anaconda](https://www.continuum.io/downloads) (step 1), then NumPy, SciPy and Biopython are already installed and you can skip this step.* Install Python libraries: NumPy, SciPy and Biopython:
-
-		pip install numpy # versions 1.8.2+
-		pip install scipy
-		pip install biopython
-		pip install scikit-learn # versions 0.17+
-
-	If you're having trouble executing these commands on a server, one problem may be that you don't have root access. If this is the case, try adding the `--user` argument to the end of the `pip` command to install as a local user.
-
-
-4. You'll need a genome alignment tool to screen your oligos against your genome of interest. We recommend [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml). If you are using Anaconda, you can easily use [bioconda](https://bioconda.github.io/) to install Bowtie2.
-
-    First set up the bioconda channels:
-
-        conda config --add channels r
-        conda config --add channels defaults
-        conda config --add channels conda-forge
-        conda config --add channels bioconda    
-
-    Next, install Bowtie2:
-
-        conda install bowtie2
-
-    After installing Bowtie2, you'll need to build a [genome index](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#the-bowtie2-build-indexer). We recommend you use an unmasked sequence to build the index. E.g. for hg38:
-
-        bowtie2-build hg38.fa hg38
-
-#### Recommended installation:
-
-1. *If you're using [Anaconda](https://www.continuum.io/downloads) (step 1), then scikit-learn is already installed and you can skip this step.* Install [scikit-learn](http://scikit-learn.org/stable/install.html):
-
-		pip install -U scikit-learn
-
-	If you're having trouble executing these commands on a server, one problem may be that you don't have root access. If this is the case, try adding the `--user` argument to the end of the `pip` command to install as a local user.
-
-	(If you're using an Anaconda environment forgot to include scikit-learn in the original Anaconda environment creation, you can add it with `conda install scikit-learn`.).
-
-2. If you want to use the `structureCheck.py` script, you need to download and compile the [NUPACK](http://nupack.org/downloads) source code. You will need to register your email address to receive login credentials before downloading the source code. Once downloaded, you will need to navigate to the directory where the code is located (there should be a `Makefile` in this directory). For example, if the source code is in the directory `/Path/To/NUPACK/nupack3.0.4`, then do:
-
-		cd /Path/To/NUPACK/nupack3.0.4
-
-	Once you're inside the NUPACK directory, compile the executables with your C compiler by running:
-
-		make
-
-	This should create executable files for many NUPACK functionalites that can be used for secondary structure evaluation, found in `/Path/To/NUPACK/nupack3.0.4/bin'. (See the provided NUPACK user manual for additional information on these executables).
-
-	You will need these executables within your path for our `structureCheck.py` script to work. You can do this with:
-
-		export PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
-
-	You will also need to set the 'NUPACKHOME' environmental variable:
-
-	    export NUPACKHOME=/Path/To/NUPACK/nupack3.0.4/
-
-	NOTE: If you don't want to re-execute these `export` commands every time you open a new terminal, you will need to [add the following lines](https://www.howtogeek.com/102468/a-beginners-guide-to-editing-text-files-with-vi/) to your `~/.bash_profile` or `~/.bashrc` files:
-
-		PATH=$PATH:/Path/To/NUPACK/nupack3.0.4/bin
-		export PATH
-
-		NUPACKHOME=/Path/To/NUPACK/nupack3.0.4/
-		export NUPACKHOME
-
-
-3. If you want to use the `kmerFilter.py` script, you will need [Jellyfish](http://www.genome.umd.edu/docs/JellyfishUserGuide.pdf). As with Bowtie2, this can easily be installed using bioconda:
-
-       conda install jellyfish
-
-   If instead you want to build Jellyfish from source, you will need to navigate to the directory where the code is located, where there should be a `Makefile`. For example, if you the source code is in directory /Path/To/Jellyfish/jellyfish-2.2.6, then do:
-
-		cd /Path/To/Jellyfish/jellyfish-2.2.6
-
-	Once here, compile with:
-
-		make
-
-    NOTE: If you are working on a server environment without root access, you may need to instead type:
-
-	    /.configure --prefix=$HOME
-	    make
-	    make install
-
-	And finally, add it to your path:
-
-		export PATH=$PATH:/Path/To/Jellyfish/jellyfish-2.2.6
-
-	As in the previous step, if you don't want to have to run this command every time you open the Terminal, then you should add the following to one of your `~/.bash_profile` or `~/.bashrc` files:
-
-		PATH=$PATH:/Path/To/Jellyfish/jellyfish-2.2.6
-		export PATH
-
-	Now, you'll also want to build a [JF file](http://www.genome.umd.edu/jellyfish.html) for your genome of interest, which we also recommend using unmasked sequences for. We also recommend writing the output file as 1-bit (max k-mer count 255, any occuring more reported as '255') and not reporting k-mers that only occur once. E.g. for 18-mers in hg38:
-
-	    jellyfish count -s 3300M -m 18 -o hg38_18.jf --out-counter-len 1 -L 2 hg38.fa
-
+* [Python 2.7.15](https://www.python.org/downloads/release/python-2715/)
+* [Biopython](https://biopython.org/)
+* [scikit-learn](https://scikit-learn.org/stable/)
+* [Bowtie 2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+* [JELLYFISH](https://www.cbcb.umd.edu/software/jellyfish/)
+* [NUPACK](http://www.nupack.org/)
 
 Running OligoMiner locally
 --------------------------
 To make sure all of your dependencies are set up properly, below we will run you through the pipeline using some small example datasets.
-
-### Downloading the code
-
-Once you have all necessary dependencies, you can download the scripts from our repository (either by [cloning the repository](https://help.github.com/articles/cloning-a-repository/) or directly downloading the files above). Be sure to download all files in the "ExampleFiles" folder if you want to test the functionality of all the scripts with the commands provided below.
-
 
 ### Running scripts on the example files
 
