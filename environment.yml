@@ -1,0 +1,14 @@
+name: probeMining 
+channels:
+  - beliveau-lab
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - biopython=1.70
+  - bowtie2=2.3.5.1
+  - jellyfish=2.2.10
+  - nupack=3.0.6
+  - pip=20.1.1
+  - python=2.7
+  - scikit-learn=0.20.4
