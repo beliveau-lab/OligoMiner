@@ -1,29 +1,15 @@
-Oligo Miner
-===========
+# OligoMiner
 
-This repository contains the code for the [OligoMiner](http://www.biorxiv.org/content/early/2017/08/16/171504) tool.
+[![DOI](https://zenodo.org/badge/DOI/10.1073/pnas.1714530115.svg)](http://dx.doi.org/10.1073/pnas.1714530115)
+
+## Overview
+
+This repository contains the code for the [OligoMiner](http://dx.doi.org/10.1073/pnas.1714530115) tool.
 
 If you are looking to use probe sequences that we have already generated for various genome assemblies (hg19, hg38, mm9, mm10, dm3, dm6, ce6, ce11, danRer10, tair10), you can download those on our [website](http://genetics.med.harvard.edu/oligopaints). If you would like to run the OligoMiner tool yourself, please see below for instructions.
 
-We provide this open source software without any warranty under the [MIT license](https://opensource.org/licenses/MIT).
 
-Please remember to cite our pre-print:
-
-OligoMiner: A rapid, flexible environment for the design of genome-scale oligonucleotide in situ hybridization probes
-Brian J. Beliveau, Jocelyn Y. Kishi, Guy Nir, Hiroshi M. Sasaki, Sinem K. Saka, Son C. Nguyen, Chao-ting Wu, Peng Yin
-bioRxiv 171504; doi: https://doi.org/10.1101/171504
-
-
-Note about operating systems
-----------------------------
-
-OligoMiner is a set of command-line scripts developed on Python 2.7 that can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you.
-
-If you are using Windows 10, we recommend enabling [Ubuntu on Windows 10](https://ubuntu.com/tutorials/ubuntu-on-windows), a full Linux distribution, and then running OligoMiner in the Ubuntu terminal.
-
-Installing OligoMiner dependencies
-----------------------------------
-
+## Installing OligoMiner dependencies
 
 1. Make sure you have [conda](https://docs.conda.io/en/latest/miniconda.html) installed. 
 
@@ -45,8 +31,14 @@ This will install the following packages and their dependencies:
 * [JELLYFISH](https://www.cbcb.umd.edu/software/jellyfish/)
 * [NUPACK](http://www.nupack.org/)
 
-Running OligoMiner locally
---------------------------
+### Note about operating systems
+
+OligoMiner is a set of command-line scripts developed on Python 2.7 that can easily be executed from a [Bash Shell](https://en.wikipedia.org/wiki/Bash_(Unix_shell)). If you are using standard Linux or Mac OS X sytsems, we expect these instructions to work for you.
+
+If you are using Windows 10, we recommend enabling [Ubuntu on Windows 10](https://ubuntu.com/tutorials/ubuntu-on-windows), a full Linux distribution, and then running OligoMiner in the Ubuntu terminal.
+
+## Running OligoMiner locally
+
 To make sure all of your dependencies are set up properly, below we will run you through the pipeline using some small example datasets.
 
 ### Running scripts on the example files
@@ -109,13 +101,37 @@ To make sure all of your dependencies are set up properly, below we will run you
 That's all! If you made it through these all without any errors thrown about missing dependencies or modules, you are all set to run OligoMiner on your own computer. Happy FISHing!
 
 ### Notes on running OligoMiner on new genomes
+
 You'll need to download your genome of interest in FASTA format and prepare index/dictionary files for your NGS aligner and optionally Jellyfish. We recommend using unmasked files for dictionary file construction and repeat-masked files as the input files for `blockParse.py`
 
-Contributing
-------------
+## Citation
+
+For usage of the pipeline and/or web application, please cite according to the enclosed [citation.bib](./citation.bib):
+
+```
+@article{Beliveau2018,
+        doi = {10.1073/pnas.1714530115},
+        url = {https://doi.org/10.1073%2Fpnas.1714530115},
+        year = 2018,
+        month = {feb},
+        publisher = {Proceedings of the National Academy of Sciences},
+        volume = {115},
+        number = {10},
+        pages = {E2183--E2192},
+        author = {Brian J. Beliveau and Jocelyn Y. Kishi and Guy Nir and Hiroshi M. Sasaki and Sinem K. Saka and Son C. Nguyen and Chao-ting Wu and Peng Yin},
+        title = {{OligoMiner} provides a rapid, flexible environment for the design of genome-scale oligonucleotide in situ hybridization probes},
+        journal = {Proceedings of the National Academy of Sciences}
+}
+```
+
+## Questions
+
+Please reach out to [Brian](mailto:beliveau@uw.edu) with any questions about installing and running the scripts, or [open an issue](../../issues/new) on GitHub.
+
+## License
+
+We provide this open source software without any warranty under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Contributing
 
 We welcome commits from researchers who wish to improve our software. Please follow the [git flow](http://nvie.com/posts/a-successful-git-branching-model/) branching model. Make all changes to a topic branch off the branch `dev`. Merge the topic branch into `dev` first (preferably using `--no-ff`) and ensure everything works. Code will _only_ merged into `master` for release builds. Hotfixes should be developed and tested in a separate branch off `master`, and a new release should be generated immediately after the hotfix is merged.
-
-Questions?
-------------
-Please reach out to [Brian](mailto:beliveau@uw.edu) with any questions about installing and running the scripts. 
