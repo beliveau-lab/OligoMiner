@@ -106,7 +106,7 @@ You'll need to download your genome of interest in FASTA format and prepare inde
 
 ## Citation
 
-For usage of the pipeline and/or web application, please cite according to the enclosed [citation.bib](./citation.bib):
+Please cite according to the enclosed [citation.bib](./citation.bib):
 
 ```
 @article{Beliveau2018,
