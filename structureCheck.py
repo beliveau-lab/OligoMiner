@@ -95,7 +95,15 @@ class StructureChecker:
                    '>%s_%s_%0.0f_%d_temp_prob.txt' \
                    % (self.fileName, self.IDval, self.Temp, randomInt)],
                    stderr=PIPE, stdout=PIPE, bufsize=1)
-        prob_val = float(p.stdout.readlines()[14])
+        stdout_lines = p.stdout.readlines()
+        prob_val = None
+        for i in range(len(stdout_lines)):
+            if stdout_lines[i] == '% Probability:\n':
+                prob_val = float(stdout_lines[i + 1])
+        if prob_val == None:
+            print '***********************************************************'
+            print 'NUPACK ERROR: could not run prob command with these inputs.'
+            print '***********************************************************'
         os.remove('%s_%s_%0.0f_%d_prob_temp.in' \
                   % (self.fileName, self.IDval, self.Temp, randomInt))
         return prob_val
@@ -194,6 +202,10 @@ class StructureChecker:
         # Print info about the results to terminal.
         candsNum = len(file_read)
         cleanNum = len(outList)
+        if 'rna' in self.NUPACKmat:
+            print '********************************************************************************'
+            print 'NUPACK WARNING: No salt corrections available for RNA.  Using 1 M Na and 0 M Mg.'
+            print '********************************************************************************'
         print('structureCheck predicted that %d of %d / %0.4f%% candidate '
               'probes are predicted to have a linear structure with p>%0.4f at '
               '%dC in %d mM Na+ and %d%% formamide' \
